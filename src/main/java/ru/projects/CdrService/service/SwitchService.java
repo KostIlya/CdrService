@@ -6,7 +6,6 @@ import ru.projects.CdrService.model.Cdr;
 import ru.projects.CdrService.model.Subscriber;
 import ru.projects.CdrService.repository.CdrRepository;
 import ru.projects.CdrService.repository.SubscriberRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -45,8 +44,8 @@ public class SwitchService {
         cdr.setCallType(random.nextBoolean() ? "01" : "02");
         cdr.setCallerNumber(subscribers.get(indexCallerNumber).getMsisdn());
         cdr.setReceiverNumber(subscribers.get(indexReceiverNumber).getMsisdn());
-        cdr.setBeginningCall(currentTime);
-        cdr.setTerminationCall(currentTime.plusSeconds(random.nextLong(0,60*60)));
+        cdr.setStartCall(currentTime);
+        cdr.setEndCall(currentTime.plusSeconds(random.nextLong(0,60*60)));
 
         cdrRepository.save(cdr);
     }

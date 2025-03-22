@@ -15,21 +15,21 @@ public class Cdr {
     private String callerNumber;
     @Column(name = "receiver_number")
     private String receiverNumber;
-    @Column(name = "beginning_call")
-    private LocalDateTime beginningCall;
-    @Column(name = "termination_call")
-    private LocalDateTime terminationCall;
+    @Column(name = "start_call")
+    private LocalDateTime startCall;
+    @Column(name = "end_call")
+    private LocalDateTime endCall;
 
     public Cdr() {
     }
 
-    public Cdr(Long id, String callType, String callerNumber, String receiverNumber, LocalDateTime beginningCall, LocalDateTime terminationCalling) {
+    public Cdr(Long id, String callType, String callerNumber, String receiverNumber, LocalDateTime startCall, LocalDateTime endCall) {
         this.id = id;
         this.callType = callType;
         this.callerNumber = callerNumber;
         this.receiverNumber = receiverNumber;
-        this.beginningCall = beginningCall;
-        this.terminationCall = terminationCalling;
+        this.startCall = startCall;
+        this.endCall = endCall;
     }
 
     public Long getId() {
@@ -64,19 +64,19 @@ public class Cdr {
         this.receiverNumber = receiverNumber;
     }
 
-    public LocalDateTime getBeginningCall() {
-        return beginningCall;
+    public LocalDateTime getStartCall() {
+        return startCall;
     }
 
-    public void setBeginningCall(LocalDateTime beginningCall) {
-        this.beginningCall = beginningCall;
+    public void setStartCall(LocalDateTime startCall) {
+        this.startCall = startCall;
     }
 
-    public LocalDateTime getTerminationCall() {
-        return terminationCall;
+    public LocalDateTime getEndCall() {
+        return endCall;
     }
 
-    public void setTerminationCall(LocalDateTime terminationCalling) {
-        this.terminationCall = terminationCalling;
+    public void setEndCall(LocalDateTime endCall) {
+        this.endCall = endCall;
     }
 }

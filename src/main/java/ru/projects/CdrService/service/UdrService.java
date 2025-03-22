@@ -7,7 +7,6 @@ import ru.projects.CdrService.model.Subscriber;
 import ru.projects.CdrService.model.Udr;
 import ru.projects.CdrService.repository.CdrRepository;
 import ru.projects.CdrService.repository.SubscriberRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class UdrService {
         udr.setIncomingCall(new Udr.CallDuration());
         udr.setOutcomingCall(new Udr.CallDuration());
         for (var cdr: cdrRecords) {
-            int secondCalDuration = cdr.getTerminationCall().getSecond() - cdr.getBeginningCall().getSecond();
+            int secondCalDuration = cdr.getEndCall().getSecond() - cdr.getStartCall().getSecond();
 
             if (cdr.getCallerNumber().equals(msisdn)) {
                 udr.getIncomingCall().setTotalTime(udr.getIncomingCall().getTotalTime().plusSeconds(secondCalDuration));

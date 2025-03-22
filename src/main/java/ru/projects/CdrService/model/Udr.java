@@ -1,6 +1,5 @@
 package ru.projects.CdrService.model;
 
-
 import java.time.LocalTime;
 
 public class Udr {
@@ -44,9 +43,11 @@ public class Udr {
 
     public static class CallDuration {
         private LocalTime totalTime;
+
         public CallDuration() {
-            this.totalTime = LocalTime.of(0,0,0);
+            this.totalTime = LocalTime.of(0, 0, 0);
         }
+
         public CallDuration(LocalTime totalTime) {
             this.totalTime = totalTime;
         }
