@@ -1,21 +1,26 @@
 package ru.projects.CdrService.model;
 
+import ru.projects.CdrService.util.SpecialTime;
+import java.util.Objects;
 
-import java.time.LocalTime;
-
+/**
+ * Класс модели UDR-записи
+ * Представляет собой запись о номере абонента (msisdn), длительности входящего звонка (incomingCall), длительности исходящего
+ * звонка (outgoingCall)
+ */
 public class Udr {
 
     private String msisdn;
     private CallDuration incomingCall;
-    private CallDuration outcomingCall;
+    private CallDuration outgoingCall;
 
     public Udr() {
     }
 
-    public Udr(String msisdn, CallDuration incomingCall, CallDuration outcomingCall) {
+    public Udr(String msisdn, CallDuration incomingCall, CallDuration outgoingCall) {
         this.msisdn = msisdn;
         this.incomingCall = incomingCall;
-        this.outcomingCall = outcomingCall;
+        this.outgoingCall = outgoingCall;
     }
 
     public String getMsisdn() {
@@ -34,29 +39,63 @@ public class Udr {
         this.incomingCall = incomingCall;
     }
 
-    public CallDuration getOutcomingCall() {
-        return outcomingCall;
+    public CallDuration getOutgoingCall() {
+        return outgoingCall;
     }
 
-    public void setOutcomingCall(CallDuration outcomingCall) {
-        this.outcomingCall = outcomingCall;
+    public void setOutgoingCall(CallDuration outgoingCall) {
+        this.outgoingCall = outgoingCall;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Udr udr = (Udr) o;
+        return Objects.equals(msisdn, udr.msisdn) &&
+                Objects.equals(incomingCall, udr.incomingCall) &&
+                Objects.equals(outgoingCall, udr.outgoingCall);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(msisdn, incomingCall, outgoingCall);
+    }
+
+    /**
+     * Внутренний класс, представляющий длительность звонков
+     * @see SpecialTime
+     */
     public static class CallDuration {
-        private LocalTime totalTime;
+        private SpecialTime totalTime;
+
         public CallDuration() {
-            this.totalTime = LocalTime.of(0,0,0);
+            this.totalTime = SpecialTime.init();
         }
-        public CallDuration(LocalTime totalTime) {
+
+        public CallDuration(SpecialTime totalTime) {
             this.totalTime = totalTime;
         }
 
-        public LocalTime getTotalTime() {
+        public SpecialTime getTotalTime() {
             return totalTime;
         }
 
-        public void setTotalTime(LocalTime totalTime) {
+        public void setTotalTime(SpecialTime totalTime) {
             this.totalTime = totalTime;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CallDuration that = (CallDuration) o;
+            return Objects.equals(totalTime, that.totalTime);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(totalTime);
         }
     }
 }

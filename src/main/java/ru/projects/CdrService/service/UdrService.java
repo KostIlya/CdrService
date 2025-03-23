@@ -8,9 +8,15 @@ import ru.projects.CdrService.model.Udr;
 import ru.projects.CdrService.repository.CdrRepository;
 import ru.projects.CdrService.repository.SubscriberRepository;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сервис для работы с UDR-записями абонентов
+ * @see CdrRepository
+ * @see SubscriberRepository
+ */
 @Service
 public class UdrService {
     @Autowired
@@ -19,48 +25,52 @@ public class UdrService {
     @Autowired
     private SubscriberRepository subscriberRepository;
 
+    /**
+     * Возвращает UDR-запись за запрошенный месяц или за весь год
+     * @param msisdn Номер абонента
+     * @param month Месяц, за который необходимо получить UDR-запись(1-12). Если указано число меньше 1 или больше 12,
+     *              то UDR-запись составляется за весь год
+     * @return Возвращает UDR-запись за запрошенный месяц, или за весь год, или null, если абонента с номером {@param msisdn}
+     *      не существует
+     * @see Udr
+     */
     public Udr getUdrByOneSubscriber(String msisdn, int month) {
-        if (!isExistMsisdn(msisdn)) {
+        if (!subscriberRepository.existsByMsisdn(msisdn)) {
             return null;
         }
-
         Udr udr = new Udr();
         List<Cdr> cdrRecords;
-        if (month < 1 || month > 12) {
-            cdrRecords = cdrRepository.findAllByCallerNumberOrReceiverNumber(msisdn);
-        } else {
+        if (month >= 1 && month <= 12) {
             cdrRecords = cdrRepository.findAllByMonthAndCallerNumberOrReceiverNumber(msisdn, month);
+        } else {
+            cdrRecords = cdrRepository.findAllByCallerNumberOrReceiverNumber(msisdn);
         }
 
         udr.setMsisdn(msisdn);
         udr.setIncomingCall(new Udr.CallDuration());
-        udr.setOutcomingCall(new Udr.CallDuration());
+        udr.setOutgoingCall(new Udr.CallDuration());
         for (var cdr: cdrRecords) {
-            int secondCalDuration = cdr.getTerminationCall().getSecond() - cdr.getBeginningCall().getSecond();
+
+            Duration duration = Duration.between(cdr.getStartCall(), cdr.getEndCall());
 
             if (cdr.getCallerNumber().equals(msisdn)) {
-                udr.getIncomingCall().setTotalTime(udr.getIncomingCall().getTotalTime().plusSeconds(secondCalDuration));
+                udr.getIncomingCall().setTotalTime(udr.getIncomingCall().getTotalTime().plus(duration));
             } else {
-                udr.getOutcomingCall().setTotalTime(udr.getOutcomingCall().getTotalTime().plusSeconds(secondCalDuration));
+                udr.getOutgoingCall().setTotalTime(udr.getOutgoingCall().getTotalTime().plus(duration));
             }
         }
 
         return udr;
     }
 
-    private boolean isExistMsisdn(String msisdn) {
-        List<String> subscribersMsisdn = subscriberRepository.findAll().stream().map(Subscriber::getMsisdn).toList();
-
-        return subscribersMsisdn.contains(msisdn);
-    }
-
+    /**
+     * Возвращает список UDR записей для всех абонентов за указанный месяц
+     * @param month Месяц, за который необходимо получить UDR-записи(1-12).
+     * @return Список UDR-записей за запрошенный месяц
+     * @see Udr
+     */
     public List<Udr> getUdrByAllSubscribers(int month) {
-        if (month < 1 || month > 12) {
-            return null;
-        }
-
         List<Udr> udrRecords = new ArrayList<>();
-        List<Cdr> cdrRecords = cdrRepository.findAllByMonth(month);
         List<String> msisdnList = subscriberRepository.findAll().stream()
                 .map(Subscriber::getMsisdn)
                 .toList();
