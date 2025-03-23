@@ -9,14 +9,4 @@ import ru.projects.CdrService.repository.SubscriberRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class SwitchServiceTest {
-    @Mock
-    CdrRepository cdrRepository;
-
-    @Mock
-    SubscriberRepository subscriberRepository;
-
-    @InjectMocks
-    SwitchService switchService;
-
-
 }

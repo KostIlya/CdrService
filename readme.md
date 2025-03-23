@@ -46,11 +46,11 @@ UDR представляет из себя объект в формате JSON, 
 2. Убедитесь, что установлена версия JDK 17 и выше
       
 
-      java -version
+         java -version
 3. Выполните команду в директории с установленным Jar-файлом
 
 
-      java -jar CdrService-0.0.1-SNAPSHOT.jar
+         java -jar CdrService-0.0.1-SNAPSHOT.jar
 ### Через исходный код:
 
 1. Склонируйте репозиторий:
