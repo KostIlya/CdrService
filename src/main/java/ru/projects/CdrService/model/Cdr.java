@@ -3,6 +3,7 @@ package ru.projects.CdrService.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class Cdr {
@@ -78,5 +79,18 @@ public class Cdr {
 
     public void setEndCall(LocalDateTime endCall) {
         this.endCall = endCall;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cdr cdr = (Cdr) o;
+        return Objects.equals(id, cdr.id) && Objects.equals(callType, cdr.callType) && Objects.equals(callerNumber, cdr.callerNumber) && Objects.equals(receiverNumber, cdr.receiverNumber) && Objects.equals(startCall, cdr.startCall) && Objects.equals(endCall, cdr.endCall);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, callType, callerNumber, receiverNumber, startCall, endCall);
     }
 }

@@ -1,6 +1,7 @@
 package ru.projects.CdrService.model;
 
-import java.time.LocalTime;
+import ru.projects.CdrService.util.SpecialTime;
+import java.util.Objects;
 
 public class Udr {
 
@@ -41,23 +42,51 @@ public class Udr {
         this.outcomingCall = outcomingCall;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Udr udr = (Udr) o;
+        return Objects.equals(msisdn, udr.msisdn) &&
+                Objects.equals(incomingCall, udr.incomingCall) &&
+                Objects.equals(outcomingCall, udr.outcomingCall);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(msisdn, incomingCall, outcomingCall);
+    }
+
     public static class CallDuration {
-        private LocalTime totalTime;
+        private SpecialTime totalTime;
 
         public CallDuration() {
-            this.totalTime = LocalTime.of(0, 0, 0);
+            this.totalTime = SpecialTime.init();
         }
 
-        public CallDuration(LocalTime totalTime) {
+        public CallDuration(SpecialTime totalTime) {
             this.totalTime = totalTime;
         }
 
-        public LocalTime getTotalTime() {
+        public SpecialTime getTotalTime() {
             return totalTime;
         }
 
-        public void setTotalTime(LocalTime totalTime) {
+        public void setTotalTime(SpecialTime totalTime) {
             this.totalTime = totalTime;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CallDuration that = (CallDuration) o;
+            return Objects.equals(totalTime, that.totalTime);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(totalTime);
         }
     }
 }

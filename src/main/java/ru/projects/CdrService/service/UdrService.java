@@ -7,6 +7,8 @@ import ru.projects.CdrService.model.Subscriber;
 import ru.projects.CdrService.model.Udr;
 import ru.projects.CdrService.repository.CdrRepository;
 import ru.projects.CdrService.repository.SubscriberRepository;
+
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,38 +21,32 @@ public class UdrService {
     private SubscriberRepository subscriberRepository;
 
     public Udr getUdrByOneSubscriber(String msisdn, int month) {
-        if (!isExistMsisdn(msisdn)) {
+        if (!subscriberRepository.existsByMsisdn(msisdn)) {
             return null;
         }
-
         Udr udr = new Udr();
         List<Cdr> cdrRecords;
-        if (month < 1 || month > 12) {
-            cdrRecords = cdrRepository.findAllByCallerNumberOrReceiverNumber(msisdn);
-        } else {
+        if (month >= 1 && month <= 12) {
             cdrRecords = cdrRepository.findAllByMonthAndCallerNumberOrReceiverNumber(msisdn, month);
+        } else {
+            cdrRecords = cdrRepository.findAllByCallerNumberOrReceiverNumber(msisdn);
         }
 
         udr.setMsisdn(msisdn);
         udr.setIncomingCall(new Udr.CallDuration());
         udr.setOutcomingCall(new Udr.CallDuration());
         for (var cdr: cdrRecords) {
-            int secondCalDuration = cdr.getEndCall().getSecond() - cdr.getStartCall().getSecond();
+
+            Duration duration = Duration.between(cdr.getStartCall(), cdr.getEndCall());
 
             if (cdr.getCallerNumber().equals(msisdn)) {
-                udr.getIncomingCall().setTotalTime(udr.getIncomingCall().getTotalTime().plusSeconds(secondCalDuration));
+                udr.getIncomingCall().setTotalTime(udr.getIncomingCall().getTotalTime().plus(duration));
             } else {
-                udr.getOutcomingCall().setTotalTime(udr.getOutcomingCall().getTotalTime().plusSeconds(secondCalDuration));
+                udr.getOutcomingCall().setTotalTime(udr.getOutcomingCall().getTotalTime().plus(duration));
             }
         }
 
         return udr;
-    }
-
-    private boolean isExistMsisdn(String msisdn) {
-        List<String> subscribersMsisdn = subscriberRepository.findAll().stream().map(Subscriber::getMsisdn).toList();
-
-        return subscribersMsisdn.contains(msisdn);
     }
 
     public List<Udr> getUdrByAllSubscribers(int month) {
@@ -59,7 +55,6 @@ public class UdrService {
         }
 
         List<Udr> udrRecords = new ArrayList<>();
-        List<Cdr> cdrRecords = cdrRepository.findAllByMonth(month);
         List<String> msisdnList = subscriberRepository.findAll().stream()
                 .map(Subscriber::getMsisdn)
                 .toList();

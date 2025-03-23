@@ -26,7 +26,7 @@ public class CdrReportController {
             UUID uuid = cdrReportService.generateCdrReport(request.getMsisdn(), request.getStartDate(), request.getEndDate());
             return ResponseEntity.ok("The report was created successfully. UUID: " + uuid);
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("ERROR: " + e.getMessage());
+            return ResponseEntity.badRequest().body("ERROR: When creating the report.");
         }
     }
 

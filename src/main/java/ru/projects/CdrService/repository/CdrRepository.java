@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CdrRepository extends JpaRepository<Cdr, Long> {
 
-    @Query(value = "SELECT * FROM Cdr c WHERE c.callerNumber = :msisdn OR c.receiverNumber = :msisdn",
+    @Query(value = "SELECT * FROM Cdr c WHERE c.caller_number = :msisdn OR c.receiver_number = :msisdn",
             nativeQuery = true)
     List<Cdr> findAllByCallerNumberOrReceiverNumber(@Param("msisdn") String msisdn);
 
