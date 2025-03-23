@@ -8,6 +8,11 @@ import ru.projects.CdrService.util.SpecialTime;
 
 import java.io.IOException;
 
+/**
+ * Десериализует JSON в объект {@link SpecialTime}
+ * @see SpecialTime
+ * @see JsonDeserializer
+ */
 public class SpecialTimeDeserializer  extends JsonDeserializer<SpecialTime> {
     @Override
     public SpecialTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {

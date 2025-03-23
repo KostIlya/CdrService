@@ -22,6 +22,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Сервис для генерации CDR отчетов
+ * @see Cdr
+ * @see Subscriber
+ */
 @Service
 public class CdrReportService {
     @Autowired
@@ -31,13 +36,23 @@ public class CdrReportService {
     private SubscriberRepository subscriberRepository;
     private final String DATE_FORMAT = "yyyy-MM-dd";
 
+    /**
+     * Генерирует CDR отчет для конкретного абонента за указанный период
+     * @param msisdn Номер абонента
+     * @param startDate Дата начала периода в формате {@code "yyyy-mm-dd"}
+     * @param endDate Дата конца периода в формате {@code "yyyy-mm-dd"}
+     * @return Уникальный идентификатор (UUID) сгенерированного отчета
+     * @throws IOException Если произошла ошибка при записи отчета.
+     * @throws IllegalArgumentException Если входные параметры {@param startDate} или {@param endDate} задана в
+     *      неправильном формате, или если абонент с {@param msisdn} не существует.
+     */
     public UUID generateCdrReport(String msisdn, String startDate, String endDate) throws IOException {
         if (!isDate(startDate) || !isDate(endDate)) {
-            throw new IOException("Invalid input parameters.");
+            throw new IllegalArgumentException("Invalid input parameters.");
         }
 
         if (!isExistMsisdn(msisdn)) {
-            throw new IOException("The subscriber does not exist");
+            throw new IllegalArgumentException("The subscriber does not exist");
         }
 
         String DIR_REPORTS = "reports";

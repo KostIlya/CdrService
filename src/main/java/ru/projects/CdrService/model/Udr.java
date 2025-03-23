@@ -3,19 +3,24 @@ package ru.projects.CdrService.model;
 import ru.projects.CdrService.util.SpecialTime;
 import java.util.Objects;
 
+/**
+ * Класс модели UDR-записи
+ * Представляет собой запись о номере абонента (msisdn), длительности входящего звонка (incomingCall), длительности исходящего
+ * звонка (outgoingCall)
+ */
 public class Udr {
 
     private String msisdn;
     private CallDuration incomingCall;
-    private CallDuration outcomingCall;
+    private CallDuration outgoingCall;
 
     public Udr() {
     }
 
-    public Udr(String msisdn, CallDuration incomingCall, CallDuration outcomingCall) {
+    public Udr(String msisdn, CallDuration incomingCall, CallDuration outgoingCall) {
         this.msisdn = msisdn;
         this.incomingCall = incomingCall;
-        this.outcomingCall = outcomingCall;
+        this.outgoingCall = outgoingCall;
     }
 
     public String getMsisdn() {
@@ -34,12 +39,12 @@ public class Udr {
         this.incomingCall = incomingCall;
     }
 
-    public CallDuration getOutcomingCall() {
-        return outcomingCall;
+    public CallDuration getOutgoingCall() {
+        return outgoingCall;
     }
 
-    public void setOutcomingCall(CallDuration outcomingCall) {
-        this.outcomingCall = outcomingCall;
+    public void setOutgoingCall(CallDuration outgoingCall) {
+        this.outgoingCall = outgoingCall;
     }
 
     @Override
@@ -49,14 +54,18 @@ public class Udr {
         Udr udr = (Udr) o;
         return Objects.equals(msisdn, udr.msisdn) &&
                 Objects.equals(incomingCall, udr.incomingCall) &&
-                Objects.equals(outcomingCall, udr.outcomingCall);
+                Objects.equals(outgoingCall, udr.outgoingCall);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(msisdn, incomingCall, outcomingCall);
+        return Objects.hash(msisdn, incomingCall, outgoingCall);
     }
 
+    /**
+     * Внутренний класс, представляющий длительность звонков
+     * @see SpecialTime
+     */
     public static class CallDuration {
         private SpecialTime totalTime;
 

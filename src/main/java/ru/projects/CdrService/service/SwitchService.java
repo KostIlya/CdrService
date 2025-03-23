@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Имитирует работы коммутатора. Генерирует случайным образом и сохраняет в репозиторий CDR-записи
+ * @see CdrRepository
+ * @see SubscriberRepository
+ */
 @Service
 public class SwitchService {
     @Autowired
@@ -18,6 +23,9 @@ public class SwitchService {
     SubscriberRepository subscriberRepository;
     private Random random = new Random();
 
+    /**
+     * Генерирует CDR-записи случайным образом за один год
+     */
     public void generateCdrForOneYear() {
         LocalDateTime currentTime = LocalDateTime.now().minusYears(1);
         LocalDateTime endTime = LocalDateTime.now();
@@ -30,6 +38,11 @@ public class SwitchService {
         }
     }
 
+    /**
+     * Генерирует CDR-запись с двумя случайными абонентами с началом даты и времени звонка в {@param currentTime} и
+     * сохранят CDR-запись в репозитории
+     * @param currentTime Дата и время начала звонка
+     */
     private void generateCdr(LocalDateTime currentTime) {
         List<Subscriber> subscribers = subscriberRepository.findAll();
         Cdr cdr = new Cdr();

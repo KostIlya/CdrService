@@ -6,6 +6,11 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 
+/**
+ * Сериализует объект {@link SpecialTime} в JSON
+ * @see SpecialTime
+ * @see JsonSerializer
+ */
 public class SpecialTimeSerializer extends JsonSerializer<SpecialTime> {
     @Override
     public void serialize(SpecialTime value, JsonGenerator gen, SerializerProvider serializers) throws IOException {

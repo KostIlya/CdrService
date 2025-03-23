@@ -5,6 +5,12 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Класс модели CDR-записи
+ * Представляет собой запись с уникальным идентификатором(id), типом вызова(callType), номером абонента, иницирующего
+ * звонок(callerNumber), номером абонента, принимающего звонок(receiverNumber), датой и временем начала звонка(startCall),
+ * датой и временем конца звонка(endCall)
+ */
 @Entity
 public class Cdr {
     @Id

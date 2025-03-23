@@ -7,6 +7,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.time.Duration;
 import java.util.Objects;
 
+/**
+ * Утильный класс для представления времени в формате часов, минут, секунд
+ * Поддерживает сериализацию и десериализацию с использованием {@link SpecialTimeSerializer} и {@link SpecialTimeDeserializer}.
+ * @see SpecialTimeSerializer
+ * @see SpecialTimeDeserializer
+ */
 @JsonSerialize(using = SpecialTimeSerializer.class)
 @JsonDeserialize(using = SpecialTimeDeserializer.class)
 public class SpecialTime {
@@ -21,14 +27,28 @@ public class SpecialTime {
         normalize();
     }
 
+    /**
+     * Инициализирует объект SpecialTime с нулевыми значениями
+     * @return Возвращает объект SpecialTime с нулевыми значениями
+     */
     public static SpecialTime init() {
         return new SpecialTime(0, 0, 0);
     }
 
+    /**
+     * Инициализирует объект SpecialTime с указанными значениями
+     * @param hours Часы
+     * @param minutes Минуты
+     * @param seconds Секунды
+     * @return Возвращает объект SpecialTime с нулевыми значениями
+     */
     public static SpecialTime of(long hours, int minutes, int seconds) {
         return new SpecialTime(hours, minutes, seconds);
     }
 
+    /**
+     * Нормализует представление минут и секунд до диапазона от 0 до 60
+     */
     private void normalize() {
         if (seconds >= 60) {
             minutes += seconds / 60;
@@ -40,6 +60,11 @@ public class SpecialTime {
         }
     }
 
+    /**
+     * Добавляет продолжительность {@param duration} к текущему времени
+     * @param duration Добавляемая продолжительность
+     * @return Возвращает объект SpecialTime с добавленной продолжительностью
+     */
     public SpecialTime plus(Duration duration) {
         long durationSeconds = duration.getSeconds();
 
