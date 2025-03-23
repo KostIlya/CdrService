@@ -62,9 +62,9 @@ UDR представляет из себя объект в формате JSON, 
 2. Выполните команды
 
 
-      mvn clean install
+         mvn clean install
 
-      mvn spring-boot:run
+         mvn spring-boot:run
 
 ## Эндопоинты Rest API
 
