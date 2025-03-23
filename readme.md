@@ -63,6 +63,7 @@ UDR представляет из себя объект в формате JSON, 
 
 
       mvn clean install
+
       mvn spring-boot:run
 
 ## Эндопоинты Rest API
